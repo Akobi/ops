@@ -1,10 +1,12 @@
-puppet
-======
+## Akobi Ops
 
-Puppet modules and configs for Akobi.
+Base repo for all of Akobi's ops-related code. This includes puppet modules, shell scripts etc.
 
-We run masterless puppet as of now, so to use the modules all you have to do is run:
+- ```puppet/``` - All puppet modules and manifests
 
-```shell
-$ sudo puppet apply manifests/site.pp --modulepath ./modules
-```
+#### puppet
+
+Contains all our puppet modules and manifests. Currently we only use masterless puppet, so to run the manifests:
+
+- Edit ```manifests/site.pp``` to modify the placeholder strings
+- Run ```$ sudo puppet apply manifests/site.pp --modulepath ./modules```
