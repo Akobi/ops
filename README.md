@@ -4,6 +4,7 @@ Base repo for all of Akobi's ops-related code. This includes puppet modules, she
 
 - ```puppet/``` - All puppet modules and manifests
 - ```autodeploy/``` - Script for autodeploying the website on a push
+- ```nginx/``` - Nginx configurations for the website
 
 #### puppet
 
@@ -17,3 +18,7 @@ Contains all our puppet modules and manifests. Currently we only use masterless 
 Contains a script to autodeploy a site upon push to a remote repo. The current version utilises a POST from Github's [Webhook Service](https://developer.github.com/webhooks/) to pull the new version of the code and optionally execute other deploy-related commands.
 
 Repositories that POSTs are expected from go in the ```configs.json``` file along with a path to the Git repo on the machine, the branch the push is expected from, and all deploy-related commands that need to be run.
+
+#### nginx
+
+Contains Nginx configs for the website. As of now, there is nothing notable being served on the webserver. However, we are using Nginx as a reverse proxy to forward requests to the autodeploy script talked about above.
