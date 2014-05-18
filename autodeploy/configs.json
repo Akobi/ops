@@ -1,0 +1,31 @@
+{
+  "port": 8001,
+  "repos": {
+    "https://github.com/jivid/jivid.github.io": [
+        {
+        "ref": "refs/heads/master",
+        "path": "~/jivid.github.io",
+        "deploy": [
+            "git pull origin master",
+            "echo deployed!"
+        ]
+        }
+    ],
+    "https://github.com/jivid/akobi": [
+      {
+        "ref": "refs/heads/master",
+        "path": "/var/www/publish",
+        "deploy": [
+            "git pull origin master"
+        ]
+      },
+      {
+        "ref": "refs/heads/develop",
+        "path": "/var/www/dev",
+        "deploy": [
+            "git pull origin develop"
+        ]
+      }
+    ]
+  }
+}
