@@ -86,9 +86,7 @@ class GithubPostReceiveHandler(tornado.web.RequestHandler):
 
         logging.info("Got POST for repo: %s" % repo['url'])
 
-        # Make this an IOLoop Callback so we're not waiting on it
         IOLoop.instance().add_callback(self.do_deploy, repo, branch)
-        # self.do_deploy(repo, branch)
 
         self.write("ACK")
         self.finish()
