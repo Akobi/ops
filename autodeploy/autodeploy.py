@@ -5,7 +5,7 @@ import subprocess
 import sys
 
 import tornado.web
-import tornado.ioloop
+from tornado.ioloop import IOLoop
 
 CONFIG_FILE = "configs.json"
 LOG_FILE = "autodeploy.log"
@@ -28,6 +28,48 @@ class GithubPostReceiveHandler(tornado.web.RequestHandler):
     def get(self, *args, **kwargs):
         self.write("Hello")
 
+    def _extract_configs(self, repo_url):
+        all_configs = self.configs['repos']
+        repo_configs = None
+
+        try:
+            repo_configs = all_configs[repo_url]
+        except KeyError:
+            logging.debug("Repo %s not in config. Ignoring" % repo_name)
+
+        return repo_configs
+
+    def _build_deploy_cmd(self, repo_configs, branch_name):
+        path = None
+        deploy_cmds = None
+
+        for config in repo_configs:
+            if config['ref'] == branch_name:
+                path = config['path']
+                deploy_cmds = config['deploy']
+
+        if path is None or deploy_cmds is None:
+            logging.debug("Wasn't expecting post-receive from ref: %s"
+                            % branch_name)
+            return None
+
+        cmd_str = " && ".join(deploy_cmds)
+        cmd = "cd %s && %s" % (path, cmd_str)
+        logging.info(cmd)
+        return cmd
+
+    def do_deploy(self, repo, branch):
+        repo_url = repo['url']
+        repo_configs = self._extract_configs(repo_url)
+
+        deploy_cmd = self._build_deploy_cmd(repo_configs, branch)
+        if deploy_cmd is None:
+            return
+
+        subprocess.call(deploy_cmd, shell=True)
+        logging.info("Finished deploying")
+        return
+
     @tornado.web.asynchronous
     def post(self, *args, **kwargs):
         event = self.request.headers['X-Github-Event']
@@ -40,42 +82,25 @@ class GithubPostReceiveHandler(tornado.web.RequestHandler):
         payload = self.request.body
         body = json.loads(payload)
         repo = body['repository']
-        config_repos = self.configs['repos']
+        branch = body['ref']
+
         logging.info("Got POST for repo: %s" % repo['url'])
 
-        try:
-            repo = config_repos[repo['url']]
-        except KeyError:
-            logging.debug("Repo %s not in config. Ignoring..." % repo['url'])
-            return
+        # Make this an IOLoop Callback so we're not waiting on it
+        IOLoop.instance().add_callback(self.do_deploy, repo, branch)
+        # self.do_deploy(repo, branch)
 
-        path = None
-        deploy_cmds = None
-        for deploy_info in repo:
-            if deploy_info['ref'] == body['ref']:
-                path = deploy_info['path']
-                deploy_cmds = deploy_info['deploy']
-
-        if path is None or deploy_cmds is None:
-            logging.debug("Wasn't expecting post-receive from ref: %s"
-                            % body['ref'])
-            return
-
-        cmd_str = " && ".join(deploy_cmds)
-        cmd = "cd %s && %s" % (path, cmd_str)
-        logging.info(cmd)
-        subprocess.call(cmd, shell=True)
-        logging.info("Finished deploying")
         self.write("ACK")
         self.finish()
+        return
 
 def main():
     app = tornado.web.Application([
         (r'/', GithubPostReceiveHandler)
     ])
-    app.listen(80)
+    app.listen(8001)
 
-    tornado.ioloop.IOLoop.instance().start()
+    IOLoop.instance().start()
 
 if __name__ == '__main__':
     user_id = os.getuid()
