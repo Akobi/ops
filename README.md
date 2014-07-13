@@ -9,6 +9,7 @@ Base repo for all of Akobi's ops-related code. This includes puppet modules, she
 #### puppet
 
 [ OUTDATED ]
+
 NOTE: We no longer use puppet and have since moved to [Salt](http://www.saltstack.com). This section is left here for posterity's sake
 
 Contains all our puppet modules and manifests. Currently we only use masterless puppet, so to run the manifests:
