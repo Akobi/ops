@@ -2,20 +2,9 @@
 
 Base repo for all of Akobi's ops-related code. This includes puppet modules, shell scripts etc.
 
-- ```puppet/``` - All puppet modules and manifests
 - ```autodeploy/``` - Script for autodeploying the website on a push
 - ```nginx/``` - Nginx configurations for the website
-
-#### puppet
-
-[ OUTDATED ]
-
-NOTE: We no longer use puppet and have since moved to [Salt](http://www.saltstack.com). This section is left here for posterity's sake
-
-Contains all our puppet modules and manifests. Currently we only use masterless puppet, so to run the manifests:
-
-- Edit ```manifests/site.pp``` to modify the placeholder strings
-- Run ```$ sudo puppet apply manifests/site.pp --modulepath ./modules```
+- ```salt/``` - All salt states minus pillars
 
 #### autodeploy
 
@@ -29,4 +18,16 @@ Contains Nginx configs for the website. As of now, there is nothing notable bein
 
 #### salt
 
-Contains all our salt states for setting up new servers in the fleet. Makes use of pillar data which will, unfortunately, not be added to this repo.
+Contains all our salt states for server configuration. The states makes use of pillar data which will, unfortunately, not be added to this repo.
+
+#### puppet
+
+[ OUTDATED ]
+
+NOTE: We no longer use puppet and have since moved to [Salt](http://www.saltstack.com). This section is left here for posterity's sake
+
+Contains all our puppet modules and manifests. Currently we only use masterless puppet, so to run the manifests:
+
+- Edit ```manifests/site.pp``` to modify the placeholder strings
+- Run ```$ sudo puppet apply manifests/site.pp --modulepath ./modules```
+
