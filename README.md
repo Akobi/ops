@@ -8,6 +8,9 @@ Base repo for all of Akobi's ops-related code. This includes puppet modules, she
 
 #### puppet
 
+[ OUTDATED ]
+NOTE: We no longer use puppet and have since moved to [Salt](http://www.saltstack.com). This section is left here for posterity's sake
+
 Contains all our puppet modules and manifests. Currently we only use masterless puppet, so to run the manifests:
 
 - Edit ```manifests/site.pp``` to modify the placeholder strings
@@ -22,3 +25,7 @@ Repositories that POSTs are expected from go in the ```configs.json``` file alon
 #### nginx
 
 Contains Nginx configs for the website. As of now, there is nothing notable being served on the webserver. However, we are using Nginx as a reverse proxy to forward requests to the autodeploy script talked about above.
+
+#### salt
+
+Contains all our salt states for setting up new servers in the fleet. Makes use of pillar data which will, unfortunately, not be added to this repo.
