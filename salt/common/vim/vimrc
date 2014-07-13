@@ -6,7 +6,7 @@ set shiftwidth=4
 set shiftround
 set expandtab
 set incsearch
-set textwidth=79
+set textwidth=0
 set nocompatible
 set backspace=2
 
@@ -17,24 +17,21 @@ syntax on
 set number
 highlight LineNr ctermfg=Grey
 
-" Tab configs
+" Always show open tabs at the top
 set showtabline=2
 
 " Highlight trailing whitespace
 highlight ExtraWhitespace ctermbg=red guibg=red
 match ExtraWhitespace /\s\+$/
 
-" JS
-autocmd FileType js set textwidth=0
-autocmd FileType jsx set textwidth=0
+" Python
+autocmd FileType python set textwidth=79
 
 " HTML
 autocmd FileType html set tabstop=2
 autocmd FileType html set shiftwidth=2
-autocmd FileType html set textwidth=0
 
 " Vim
 autocmd FileType vim set tabstop=2
 autocmd FileType vim set shiftwidth=2
-autocmd FileType vim set textwidth=0
 
