@@ -2,14 +2,14 @@
   "port": 8001,
   "repos": {
     "https://github.com/jivid/jivid.github.io": [
-        {
-          "ref": "refs/heads/master",
-          "path": "~/jivid.github.io",
-          "deploy": [
-            "git pull origin master",
-            "echo deployed!"
-          ]
-        }
+      {
+        "ref": "refs/heads/master",
+        "path": "~/jivid.github.io",
+        "deploy": [
+          "git pull origin master",
+          "echo deployed!"
+        ]
+      }
     ],
   }
 }
